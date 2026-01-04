@@ -1,0 +1,328 @@
+:root {
+    --primary: #1d9bf0;
+    --primary-hover: #1a8cd8;
+    --bg-dark: #000000;
+    --card-bg: rgba(255, 255, 255, 0.05);
+    --text-main: #ffffff;
+    --text-dim: #71767b;
+    --error: #f4212e;
+    --success: #00ba7c;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Outfit', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+/* Dynamic Background Blobs */
+.background-blobs {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    filter: blur(80px);
+    opacity: 0.4;
+}
+
+.blob {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--primary);
+    animation: move 20s infinite alternate;
+}
+
+.blob-1 {
+    width: 400px;
+    height: 400px;
+    top: -100px;
+    left: -100px;
+    background: #1d9bf0;
+}
+
+.blob-2 {
+    width: 300px;
+    height: 300px;
+    bottom: -50px;
+    right: -50px;
+    background: #7856ff;
+    animation-delay: -5s;
+}
+
+.blob-3 {
+    width: 250px;
+    height: 250px;
+    top: 40%;
+    left: 60%;
+    background: #1d9bf0;
+    animation-delay: -10s;
+}
+
+@keyframes move {
+    from {
+        transform: translate(0, 0) scale(1);
+    }
+
+    to {
+        transform: translate(100px, 50px) scale(1.1);
+    }
+}
+
+/* Container & Layout */
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 80px 20px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+header {
+    margin-bottom: 50px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 15px;
+}
+
+.twitter-icon {
+    width: 40px;
+    height: 40px;
+    fill: white;
+}
+
+h1 {
+    font-size: 3rem;
+    font-weight: 600;
+    letter-spacing: -1px;
+}
+
+.subtitle {
+    color: var(--text-dim);
+    font-size: 1.2rem;
+}
+
+/* Downloader Card */
+.downloader-card {
+    width: 100%;
+    background: var(--card-bg);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 40px;
+    border-radius: 30px;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s ease;
+}
+
+.downloader-card:hover {
+    transform: translateY(-5px);
+}
+
+.input-group {
+    display: flex;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.05);
+    padding: 8px;
+    border-radius: 20px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+input {
+    flex: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    padding: 15px 20px;
+    font-size: 1.1rem;
+    font-family: inherit;
+}
+
+input::placeholder {
+    color: var(--text-dim);
+}
+
+button {
+    background: white;
+    color: black;
+    border: none;
+    padding: 0 35px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 140px;
+}
+
+button:hover {
+    background: #e6e6e6;
+    transform: scale(1.02);
+}
+
+button:active {
+    transform: scale(0.98);
+}
+
+button:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Status Messages */
+.status-message {
+    margin-top: 20px;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 0.95rem;
+}
+
+.status-message.error {
+    color: var(--error);
+    background: rgba(244, 33, 46, 0.1);
+}
+
+.status-message.success {
+    color: var(--success);
+    background: rgba(0, 186, 124, 0.1);
+}
+
+.hidden {
+    display: none;
+}
+
+/* Pac-Man Game */
+.pacman-container {
+    margin-top: 30px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 20px;
+    border: 2px solid var(--primary);
+}
+
+.game-header {
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.game-header h3 {
+    color: var(--primary);
+    margin-bottom: 10px;
+    font-size: 1.3rem;
+}
+
+.game-controls {
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    margin: 5px 0;
+}
+
+.game-score {
+    color: var(--text-main);
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-top: 10px;
+}
+
+#gameCanvas {
+    display: block;
+    margin: 0 auto;
+    background: #000;
+    border-radius: 10px;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Instructions */
+.instructions {
+    margin-top: 80px;
+    width: 100%;
+}
+
+.instructions h2 {
+    margin-bottom: 30px;
+    font-weight: 400;
+    color: var(--text-dim);
+}
+
+.steps {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.step {
+    background: var(--card-bg);
+    padding: 25px;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.step-num {
+    width: 35px;
+    height: 35px;
+    background: var(--primary);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+footer {
+    padding: 40px;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+footer p {
+    margin: 5px 0;
+}
+
+footer .credits {
+    font-size: 0.8rem;
+    opacity: 0.7;
+}
+
+@media (max-width: 768px) {
+    .steps {
+        grid-template-columns: 1fr;
+    }
+
+    .input-group {
+        flex-direction: column;
+    }
+
+    button {
+        padding: 18px;
+    }
+
+    h1 {
+        font-size: 2.2rem;
+    }
+}

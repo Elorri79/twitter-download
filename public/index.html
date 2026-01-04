@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Video Downloader | Premium</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <main class="container">
+        <header>
+            <div class="logo">
+                <svg viewBox="0 0 24 24" aria-hidden="true" class="twitter-icon">
+                    <path
+                        d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z">
+                    </path>
+                </svg>
+                <h1>Elorri Video Downloader</h1>
+            </div>
+            <p class="subtitle">Descarga vídeos de Twitter con la máxima calidad en un clic.</p>
+        </header>
+
+        <section class="downloader-card">
+            <div class="input-group">
+                <input type="text" id="videoUrl" placeholder="Pega el enlace del tweet aquí..." autocomplete="off">
+                <button id="downloadBtn">
+                    <span class="btn-text">Descargar</span>
+                </button>
+            </div>
+            <div id="statusMessage" class="status-message hidden"></div>
+
+            <!-- Pac-Man Game -->
+            <div id="pacmanGame" class="pacman-container hidden">
+                <div class="game-header">
+                    <h3>¡Juega mientras descargas! 🎮</h3>
+                    <p class="game-controls">Usa las flechas ← ↑ → ↓ para moverte</p>
+                    <p class="game-score">Puntos: <span id="score">0</span></p>
+                </div>
+                <canvas id="gameCanvas" width="400" height="400"></canvas>
+            </div>
+        </section>
+
+        <section class="instructions">
+            <h2>¿Cómo funciona?</h2>
+            <div class="steps">
+                <div class="step">
+                    <span class="step-num">1</span>
+                    <p>Copia el enlace del tweet que contiene el vídeo.</p>
+                </div>
+                <div class="step">
+                    <span class="step-num">2</span>
+                    <p>Pégalo en el recuadro superior.</p>
+                </div>
+                <div class="step">
+                    <span class="step-num">3</span>
+                    <p>Haz clic en "Descargar" y listos.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>Creado por <strong>Elorri79</strong></p>
+        <p class="credits">Con Gemini 3 Flash & Claude Sonnet 4.5 usando <strong>Antigravity</strong></p>
+    </footer>
+
+    <script src="client.js"></script>
+</body>
+
+</html>
