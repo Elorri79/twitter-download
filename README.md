@@ -1,121 +1,121 @@
 # 🎮 Elorri Video Downloader
 
-Una aplicación web premium para descargar vídeos de Twitter/X con un minijuego de Pac-Man integrado para amenizar la espera.
+A premium web application to download Twitter/X videos with an integrated Pac-Man minigame to make waiting fun.
 
 ![Screenshot](https://img.shields.io/badge/Node.js-v25.2.1-green)
 ![Screenshot](https://img.shields.io/badge/Express-4.19.2-blue)
 ![Screenshot](https://img.shields.io/badge/yt--dlp-2025.12.08-red)
 
-## ✨ Características
+## ✨ Features
 
-- 🎬 **Descarga vídeos de Twitter/X** en máxima calidad
-- 🎮 **Minijuego de Pac-Man** jugable mientras esperas la descarga
-- 🎨 **Interfaz premium** con diseño oscuro y efectos glassmorphism
-- 🔄 **Procesamiento inteligente** con FFmpeg para máxima compatibilidad
-- 📱 **Responsive** - funciona en desktop y móvil
+- 🎬 **Download Twitter/X videos** in maximum quality
+- 🎮 **Playable Pac-Man minigame** while waiting for downloads
+- 🎨 **Premium interface** with dark design and glassmorphism effects
+- 🔄 **Smart processing** with FFmpeg for maximum compatibility
+- 📱 **Responsive** - works on desktop and mobile
 
-## 🚀 Instalación
+## 🚀 Installation
 
-### Requisitos previos
+### Prerequisites
 
-- Node.js (v14 o superior)
-- FFmpeg instalado en el sistema
-- `curl` o `wget`
+- Node.js (v14 or higher)
+- FFmpeg installed on the system
+- `curl` or `wget`
 
-### Pasos
+### Steps
 
-1. Clona el repositorio:
+1. Clone the repository:
 ```bash
-git clone https://github.com/TU_USUARIO/twitter-downloader.git
-cd twitter-downloader
+git clone https://github.com/Elorri79/twitter-download.git
+cd twitter-download
 ```
 
-2. Instala las dependencias:
+2. Install dependencies:
 ```bash
 npm install
 ```
 
-3. El binario de `yt-dlp` se descargará automáticamente en la carpeta `bin/` al ejecutar por primera vez.
+3. The `yt-dlp` binary will be automatically downloaded to the `bin/` folder on first run.
 
-4. Inicia el servidor:
+4. Start the server:
 ```bash
 npm start
 ```
 
-5. Abre tu navegador en `http://localhost:3000`
+5. Open your browser at `http://localhost:3000`
 
-## 🎯 Uso
+## 🎯 Usage
 
-1. Copia el enlace de cualquier tweet que contenga un vídeo
-2. Pégalo en el campo de entrada
-3. Haz clic en **"Descargar"**
-4. ¡Juega al Pac-Man mientras esperas! 🕹️
-5. El vídeo se descargará automáticamente cuando esté listo
+1. Copy the link of any tweet containing a video
+2. Paste it into the input field
+3. Click **"Descargar"** (Download)
+4. Play Pac-Man while you wait! 🕹️
+5. The video will download automatically when ready
 
-### Controles del juego
+### Game Controls
 
-- **← → ↑ ↓** - Mover a Pac-Man
-- Evita los fantasmas 👻
-- Come todos los puntos para ganar 🟡
+- **← → ↑ ↓** - Move Pac-Man
+- Avoid the ghosts 👻
+- Eat all the dots to win 🟡
 
-## 🛠️ Tecnologías
+## 🛠️ Technologies
 
 ### Backend
-- **Node.js** + **Express** - Servidor web
-- **yt-dlp** - Motor de descarga de vídeos
-- **FFmpeg** - Procesamiento y conversión de vídeo
+- **Node.js** + **Express** - Web server
+- **yt-dlp** - Video download engine
+- **FFmpeg** - Video processing and conversion
 
 ### Frontend
-- **HTML5 Canvas** - Renderizado del juego
-- **Vanilla JavaScript** - Lógica del cliente
-- **CSS3** - Estilos premium con animaciones
+- **HTML5 Canvas** - Game rendering
+- **Vanilla JavaScript** - Client logic
+- **CSS3** - Premium styles with animations
 
-## 📁 Estructura del proyecto
+## 📁 Project Structure
 
 ```
 twitter-downloader/
-├── bin/                    # Binario de yt-dlp
-├── public/                 # Archivos del frontend
-│   ├── index.html         # Estructura HTML
-│   ├── style.css          # Estilos premium
-│   └── client.js          # Lógica del cliente + juego
-├── temp/                   # Archivos temporales de descarga
-├── server.js              # Servidor Express
-├── package.json           # Dependencias
-└── README.md              # Este archivo
+├── bin/                    # yt-dlp binary
+├── public/                 # Frontend files
+│   ├── index.html         # HTML structure
+│   ├── style.css          # Premium styles
+│   └── client.js          # Client logic + game
+├── temp/                   # Temporary download files
+├── server.js              # Express server
+├── package.json           # Dependencies
+└── README.md              # This file
 ```
 
-## 🎨 Capturas de pantalla
+## 🎨 Screenshots
 
-La interfaz cuenta con:
-- Fondo animado con blobs de colores
-- Efectos glassmorphism en las tarjetas
-- Animaciones suaves y micro-interacciones
-- Minijuego retro de Pac-Man totalmente funcional
+The interface features:
+- Animated background with color blobs
+- Glassmorphism effects on cards
+- Smooth animations and micro-interactions
+- Fully functional retro Pac-Man minigame
 
-## 🤝 Créditos
+## 🤝 Credits
 
-**Creado por Elorri79**
+**Created by Elorri79**
 
-Con **Gemini 3 Flash** & **Claude Sonnet 4.5** usando **Antigravity**
+With **Gemini 3 Flash** & **Claude Sonnet 4.5** using **Antigravity**
 
-## 📝 Licencia
+## 📝 License
 
-MIT License - siéntete libre de usar este proyecto como quieras.
+MIT License - feel free to use this project however you want.
 
-## 🐛 Problemas conocidos
+## 🐛 Known Issues
 
-- Los vídeos privados o protegidos no se pueden descargar
-- Algunos vídeos muy largos pueden tardar más en procesarse
+- Private or protected videos cannot be downloaded
+- Some very long videos may take longer to process
 
-## 💡 Mejoras futuras
+## 💡 Future Improvements
 
-- [ ] Soporte para descargas por lotes
-- [ ] Selección de calidad de vídeo
-- [ ] Más minijuegos (Snake, Tetris, etc.)
-- [ ] Historial de descargas
-- [ ] Modo claro/oscuro
+- [ ] Batch download support
+- [ ] Video quality selection
+- [ ] More minigames (Snake, Tetris, etc.)
+- [ ] Download history
+- [ ] Light/dark mode toggle
 
 ---
 
-⭐ Si te gusta este proyecto, ¡dale una estrella en GitHub!
+⭐ If you like this project, give it a star on GitHub!
