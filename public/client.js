@@ -187,14 +187,24 @@ document.addEventListener('DOMContentLoaded', () => {
             // Check collision with Pac-Man
             if (ghost.x === pacman.x && ghost.y === pacman.y) {
                 stopGame();
-                setStatus('¡Te atraparon! Puntuación final: ' + score, 'error');
+                if (isDownloading) {
+                    setStatus('¡Te atraparon! Nueva partida en 1 segundo...', 'error');
+                    setTimeout(restartGameIfDownloading, 1000);
+                } else {
+                    setStatus('¡Te atraparon! Puntuación final: ' + score, 'error');
+                }
             }
         });
 
         // Check win condition
         if (dots.length === 0) {
             stopGame();
-            setStatus('¡Ganaste! Puntuación: ' + score, 'success');
+            if (isDownloading) {
+                setStatus('¡Ganaste! Siguiente partida en 1 segundo...', 'success');
+                setTimeout(restartGameIfDownloading, 1000);
+            } else {
+                setStatus('¡Ganaste! Puntuación: ' + score, 'success');
+            }
         }
 
         drawGame();
@@ -218,6 +228,14 @@ document.addEventListener('DOMContentLoaded', () => {
     function stopGame() {
         gameActive = false;
         if (gameInterval) clearInterval(gameInterval);
+    }
+
+    function restartGameIfDownloading() {
+        if (isDownloading && !gameActive) {
+            // Restart game automatically while downloading
+            startGame();
+            setStatus('¡Siguiente partida! Puntuación: ' + score, 'success');
+        }
     }
 
     // Keyboard controls
