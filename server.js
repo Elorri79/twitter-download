@@ -30,7 +30,6 @@ app.post('/api/download', (req, res) => {
 
     const id = crypto.randomBytes(8).toString('hex');
     const tempRawPath = path.join(TEMP_DIR, `${id}_raw.mp4`);
-    const tempFinalPath = path.join(TEMP_DIR, `${id}_final.mp4`);
 
     console.log(`Step 1: Downloading raw video for ${url}`);
 
@@ -51,55 +50,16 @@ app.post('/api/download', (req, res) => {
             return res.status(500).json({ error: 'Fallo al descargar de Twitter. Es posible que el enlace no sea válido o el vídeo sea privado.' });
         }
 
-        console.log(`Step 2: Normalizing video for VLC compatibility`);
+        // Send the file directly without FFmpeg processing
+        res.setHeader('Content-Type', 'video/mp4');
+        res.setHeader('Content-Disposition', 'attachment; filename="video.mp4"');
 
-        // Use FFmpeg to force a VERY compatible format
-        // -vcodec libx264: most compatible video codec
-        // -acodec aac: standard audio
-        // -pix_fmt yuv420p: essential for compatibility with many players
-        // -profile:v main -level:v 3.1: standard profile for broad devices
-        // -movflags +faststart: puts metadata at the beginning of the file
-        const ffmpeg = spawn('ffmpeg', [
-            '-i', tempRawPath,
-            '-c:v', 'libx264',
-            '-c:a', 'aac',
-            '-pix_fmt', 'yuv420p',
-            '-profile:v', 'main',
-            '-level:v', '3.1',
-            '-movflags', '+faststart',
-            '-y',
-            tempFinalPath
-        ]);
+        const fileStream = fs.createReadStream(tempRawPath);
+        fileStream.pipe(res);
 
-        ffmpeg.on('close', (ffCode) => {
-            // Clean up raw file immediately
-            fs.unlink(tempRawPath, () => { });
-
-            if (ffCode !== 0) {
-                console.error('FFmpeg normalization failed');
-                return res.status(500).json({ error: 'Error al procesar el vídeo para compatibilidad.' });
-            }
-
-            // Get original filename
-            const getFileName = spawn(YT_DLP_PATH, ['--get-filename', '-o', '%(title)s.%(ext)s', url]);
-            let originalName = 'video.mp4';
-
-            getFileName.stdout.on('data', (data) => originalName = data.toString().trim());
-            getFileName.on('close', () => {
-                const safeFilename = originalName.replace(/[^\x20-\x7E]/g, '') || 'video.mp4';
-                const encodedFilename = encodeURIComponent(originalName).replace(/['()]/g, escape).replace(/\*/g, '%2A');
-
-                res.setHeader('Content-Disposition', `attachment; filename="${safeFilename}"; filename*=UTF-8''${encodedFilename}`);
-                res.setHeader('Content-Type', 'video/mp4');
-
-                const fileStream = fs.createReadStream(tempFinalPath);
-                fileStream.pipe(res);
-
-                fileStream.on('end', () => {
-                    fs.unlink(tempFinalPath, (err) => {
-                        if (err) console.error(`Error deleting final temp file: ${err}`);
-                    });
-                });
+        fileStream.on('end', () => {
+            fs.unlink(tempRawPath, (err) => {
+                if (err) console.error(`Error deleting temp file: ${err}`);
             });
         });
     });
