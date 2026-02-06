@@ -1,17 +1,19 @@
-const express = require('express');
-const cors = require('cors');
 const https = require('https');
-const path = require('path');
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+module.exports = async (req, res) => {
+    // Configurar CORS
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
-app.use(cors());
-app.use(express.json());
-app.use(express.static('public'));
+    if (req.method === 'OPTIONS') {
+        return res.status(200).end();
+    }
 
-// API de descarga directa
-app.post('/api/download', async (req, res) => {
+    if (req.method !== 'POST') {
+        return res.status(405).json({ error: 'Method not allowed' });
+    }
+
     const { url } = req.body;
 
     if (!url) {
@@ -36,7 +38,7 @@ app.post('/api/download', async (req, res) => {
 
         const tweetId = tweetIdMatch[1];
 
-        // API de Twitter
+        // Usar API pública de Twitter (guest token)
         const guestTokenUrl = 'https://api.twitter.com/1.1/guest/activate.json';
         const bearerToken = 'AAAAAAAAAAAAAAAAAAAAANRILgAAAAAAnNwIzUejRCOuH5E6I8xnZz4puTs%3D1Zv7ttfk8LF81IUq16cHjhLTvJu4FA33AGWWjCpTnA';
 
@@ -44,22 +46,27 @@ app.post('/api/download', async (req, res) => {
         const guestTokenResponse = await new Promise((resolve, reject) => {
             const options = {
                 method: 'POST',
-                headers: { 'Authorization': `Bearer ${bearerToken}` }
+                headers: {
+                    'Authorization': `Bearer ${bearerToken}`
+                }
             };
 
             https.request(guestTokenUrl, options, (response) => {
                 let data = '';
                 response.on('data', chunk => data += chunk);
                 response.on('end', () => {
-                    try { resolve(JSON.parse(data)); }
-                    catch (e) { reject(e); }
+                    try {
+                        resolve(JSON.parse(data));
+                    } catch (e) {
+                        reject(e);
+                    }
                 });
             }).on('error', reject).end();
         });
 
         const guestToken = guestTokenResponse.guest_token;
 
-        // Obtener info del tweet
+        // Obtener información del tweet
         const tweetUrl = `https://api.twitter.com/1.1/statuses/show.json?id=${tweetId}&include_entities=true&tweet_mode=extended`;
 
         const tweetData = await new Promise((resolve, reject) => {
@@ -74,13 +81,16 @@ app.post('/api/download', async (req, res) => {
                 let data = '';
                 response.on('data', chunk => data += chunk);
                 response.on('end', () => {
-                    try { resolve(JSON.parse(data)); }
-                    catch (e) { reject(e); }
+                    try {
+                        resolve(JSON.parse(data));
+                    } catch (e) {
+                        reject(e);
+                    }
                 });
             }).on('error', reject);
         });
 
-        // Buscar video
+        // Buscar el video en las entidades del tweet
         let videoUrl = null;
 
         if (tweetData.extended_entities && tweetData.extended_entities.media) {
@@ -104,16 +114,17 @@ app.post('/api/download', async (req, res) => {
 
         console.log(`Video URL found: ${videoUrl}`);
 
-        // Enviar video
-        res.setHeader('Content-Type', 'video/mp4');
-        res.setHeader('Content-Disposition', 'attachment; filename="twitter-video.mp4"');
-        https.get(videoUrl, (videoStream) => videoStream.pipe(res))
-            .on('error', (err) => {
-                console.error('Download error:', err);
-                if (!res.headersSent) {
-                    res.status(500).json({ error: 'Error al descargar el video' });
-                }
-            });
+        // Descargar y enviar el video
+        https.get(videoUrl, (videoStream) => {
+            res.setHeader('Content-Type', 'video/mp4');
+            res.setHeader('Content-Disposition', 'attachment; filename="twitter-video.mp4"');
+            videoStream.pipe(res);
+        }).on('error', (err) => {
+            console.error('Download error:', err);
+            if (!res.headersSent) {
+                res.status(500).json({ error: 'Error al descargar el video' });
+            }
+        });
 
     } catch (error) {
         console.error('Error:', error);
@@ -121,16 +132,4 @@ app.post('/api/download', async (req, res) => {
             error: 'Fallo al procesar el video. El tweet puede ser privado o no tener video.'
         });
     }
-});
-
-// Global error handler
-app.use((err, req, res, next) => {
-    console.error('Unhandled error:', err);
-    if (!res.headersSent) {
-        res.status(500).json({ error: 'Internal Server Error' });
-    }
-});
-
-app.listen(PORT, () => {
-    console.log(`Server running at http://localhost:${PORT}`);
-});
+};
